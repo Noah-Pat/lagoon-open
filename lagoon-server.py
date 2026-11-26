@@ -22,6 +22,7 @@ import threading
 PORT = int(sys.argv[1]) if len(sys.argv) > 1 else 8765
 HERE = os.path.dirname(os.path.abspath(__file__))
 HTML = os.path.join(HERE, "lagoon-open-3d.html")
+MODELS_HTML = os.path.join(HERE, "lagoon-open-3d-models.html")  # Blender models test version, served at /models
 WS_GUID = b"258EAFA5-E914-47DA-95CA-C5AB0DC85B11"
 MAX_FRAME = 4 * 1024 * 1024
 
@@ -198,8 +199,13 @@ def ws_loop(client, reader):
 
 def serve_http(sock, path):
     path = path.split("?", 1)[0]
-    if path in ("/", "/index.html", "/lagoon-open-3d.html") and os.path.isfile(HTML):
-        with open(HTML, "rb") as f:
+    page = None
+    if path in ("/", "/index.html", "/lagoon-open-3d.html"):
+        page = HTML
+    elif path in ("/models", "/lagoon-open-3d-models.html"):
+        page = MODELS_HTML
+    if page and os.path.isfile(page):
+        with open(page, "rb") as f:
             body = f.read()
         status, ctype = "200 OK", "text/html; charset=utf-8"
     else:

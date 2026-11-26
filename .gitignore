@@ -3,3 +3,6 @@ Thumbs.db
 desktop.ini
 .claude/
 *.log
+# Blender backups and the intermediate GLB (the game embeds it in the HTML)
+*.blend1
+models/lagoon-models.glb

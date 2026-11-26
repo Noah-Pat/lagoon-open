@@ -228,8 +228,12 @@ public static class LagoonRelay {
     if (q >= 0) path = path.Substring(0, q);
     byte[] body;
     string status = "200 OK", type = "text/html; charset=utf-8";
+    // Blender models test version sits next to the game and is served at /models
+    string modelsPath = Path.Combine(Path.GetDirectoryName(htmlPath), "lagoon-open-3d-models.html");
     if ((path == "/" || path == "/index.html" || path == "/lagoon-open-3d.html") && File.Exists(htmlPath)) {
       body = File.ReadAllBytes(htmlPath);
+    } else if ((path == "/models" || path == "/lagoon-open-3d-models.html") && File.Exists(modelsPath)) {
+      body = File.ReadAllBytes(modelsPath);
     } else {
       status = "404 Not Found"; type = "text/plain"; body = Encoding.UTF8.GetBytes("Not found");
     }
